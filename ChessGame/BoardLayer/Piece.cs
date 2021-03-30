@@ -15,9 +15,9 @@ namespace ChessGame.BoardLayer
         {
         }
 
-        public Piece(Position position, Color color, Board board)
+        public Piece(Color color, Board board)
         {
-            Position = position;
+            Position = null;
             Color = color;
             Board = board;
             MovementAmount = 0;
