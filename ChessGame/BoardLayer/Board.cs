@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessGame.Board
+namespace ChessGame.BoardLayer
 {
     class Board
     {
@@ -20,6 +20,11 @@ namespace ChessGame.Board
             Lines = lines;
             Columns = columns;
             Pieces = new Piece[lines, columns];
+        }
+
+        public Piece GetPiece(int line, int column)
+        {
+            return Pieces[line, column];
         }
     }
 }
