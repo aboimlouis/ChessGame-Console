@@ -26,10 +26,40 @@ namespace ChessGame.BoardLayer
         {
             return Pieces[line, column];
         }
+        public Piece GetPiece(Position position)
+        {
+            return Pieces[position.Line, position.Column];
+        }
         public void InsertPiece(Piece piece, Position position)
         {
+            if (occupiedSpace(position))
+            {
+                throw new BoardException("Space occupied by another piece!");
+            }
             Pieces[position.Line, position.Column] = piece;
             piece.Position = position;
+        }
+
+        public bool occupiedSpace(Position position)
+        {
+            validPosition(position);
+            return GetPiece(position) != null;
+        }
+
+        public bool validPosition(Position position)
+        {
+            if (position.Line < 0 || position.Line >= Lines || position.Column < 0 || position.Column >= Columns)
+                return false;
+            else
+                return true;
+        }
+
+        public void validatePosition(Position position)
+        {
+            if (!validPosition(position))
+            {
+                throw new BoardException("Invalid Position!!");
+            }
         }
     }
 }
