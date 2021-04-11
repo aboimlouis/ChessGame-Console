@@ -5,16 +5,16 @@ using ChessGame.BoardLayer;
 
 namespace ChessGame.ChessGame
 {
-    class ChessCordinates
+    class ChessPosition
     {
         public char Column { get; set; }
         public int Line { get; set; }
 
-        public ChessCordinates()
+        public ChessPosition()
         {
         }
 
-        public ChessCordinates(char column, int line)
+        public ChessPosition(char column, int line)
         {
             Column = column;
             Line = line;

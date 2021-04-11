@@ -22,5 +22,10 @@ namespace ChessGame.BoardLayer
             Board = board;
             MovementAmount = 0;
         }
+
+        public void IncrementMovementAmount()
+        {
+            MovementAmount++;
+        }
     }
 }

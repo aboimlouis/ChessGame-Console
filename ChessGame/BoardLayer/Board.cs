@@ -40,6 +40,19 @@ namespace ChessGame.BoardLayer
             piece.Position = position;
         }
 
+        public Piece RemovePiece(Position position)
+        {
+            if (GetPiece(position) == null)
+            {
+                return null;
+            }
+            Piece removedPiece = GetPiece(position);
+            removedPiece.Position = null;
+            Pieces[position.Line, position.Column] = null;
+            return removedPiece;
+
+        }
+
         public bool occupiedSpace(Position position)
         {
             validPosition(position);
