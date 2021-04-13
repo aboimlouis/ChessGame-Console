@@ -12,7 +12,6 @@ namespace ChessGame.ChessGame
         private Color colorTurn;
         private Piece[,] pieces;
         public bool End { get; private set; }
-
         public ChessInGame()
         {
             this.chessBoard = new Board(8, 8);

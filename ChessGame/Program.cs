@@ -7,11 +7,21 @@ namespace ChessGame
     {
         static void Main(string[] args)
         {
-            Board chessBoard = new Board(8,8);
-
             ChessInGame inGame = new ChessInGame();
 
-            Display.PrintBoard(inGame.GetBoard());
+            while (!inGame.End)
+            {
+                Console.Clear();
+                Display.PrintBoard(inGame.GetBoard());
+
+                Console.WriteLine();
+                Console.Write("Origin: ");
+                Position origin = Display.ReadChessPosition().ToPosition();
+                Console.Write("Destination: ");
+                Position destination = Display.ReadChessPosition().ToPosition();
+
+                inGame.ExecuteMove(origin, destination);
+            }
         }
     }
 }
