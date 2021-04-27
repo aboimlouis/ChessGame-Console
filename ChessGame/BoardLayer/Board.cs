@@ -32,7 +32,7 @@ namespace ChessGame.BoardLayer
         }
         public void InsertPiece(Piece piece, Position position)
         {
-            if (occupiedSpace(position))
+            if (OccupiedSpace(position))
             {
                 throw new BoardException("Space occupied by another piece!");
             }
@@ -53,13 +53,13 @@ namespace ChessGame.BoardLayer
 
         }
 
-        public bool occupiedSpace(Position position)
+        public bool OccupiedSpace(Position position)
         {
-            validPosition(position);
+            ValidPosition(position);
             return GetPiece(position) != null;
         }
 
-        public bool validPosition(Position position)
+        public bool ValidPosition(Position position)
         {
             if (position.Line < 0 || position.Line >= Lines || position.Column < 0 || position.Column >= Columns)
                 return false;
@@ -67,9 +67,9 @@ namespace ChessGame.BoardLayer
                 return true;
         }
 
-        public void validatePosition(Position position)
+        public void ValidatePosition(Position position)
         {
-            if (!validPosition(position))
+            if (!ValidPosition(position))
             {
                 throw new BoardException("Invalid Position!!");
             }

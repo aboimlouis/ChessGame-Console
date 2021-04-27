@@ -7,66 +7,73 @@ namespace ChessGame.ChessGame
 {
     class ChessInGame
     {
-        private Board chessBoard;
-        private int turn;
-        private Color colorTurn;
-        private Piece[,] pieces;
+        public Board ChessBoard { get; private set; }
+        public  int Turn { get; private set; }
         public bool End { get; private set; }
+        public Color ColorTurn { get; private set; }
+        private Piece[,] pieces;
         public ChessInGame()
         {
-            this.chessBoard = new Board(8, 8);
-            this.turn = 1;
-            this.colorTurn = Color.White;
+            this.ChessBoard = new Board(8, 8);
+            this.Turn = 1;
+            this.ColorTurn = Color.White;
             End = false;
             pieces = new Piece[,]{
                 { 
-                    new Rook(Color.Black, chessBoard),
-                    new Knight(Color.Black, chessBoard),
-                    new Bishop(Color.Black, chessBoard),
-                    new King(Color.Black, chessBoard),
-                    new Queen(Color.Black, chessBoard),
-                    new Bishop(Color.Black, chessBoard),
-                    new Knight(Color.Black, chessBoard),
-                    new Rook(Color.Black, chessBoard)
+                    new Rook(Color.Black, ChessBoard),
+                    new Knight(Color.Black, ChessBoard),
+                    new Bishop(Color.Black, ChessBoard),
+                    new King(Color.Black, ChessBoard),
+                    new Queen(Color.Black, ChessBoard),
+                    new Bishop(Color.Black, ChessBoard),
+                    new Knight(Color.Black, ChessBoard),
+                    new Rook(Color.Black, ChessBoard)
                 },
                 { 
-                    new Rook(Color.White, chessBoard),
-                    new Knight(Color.White, chessBoard),
-                    new Bishop(Color.White, chessBoard),
-                    new King(Color.White, chessBoard),
-                    new Queen(Color.White, chessBoard),
-                    new Bishop(Color.White, chessBoard),
-                    new Knight(Color.White, chessBoard),
-                    new Rook(Color.White, chessBoard)
+                    new Rook(Color.White, ChessBoard),
+                    new Knight(Color.White, ChessBoard),
+                    new Bishop(Color.White, ChessBoard),
+                    new King(Color.White, ChessBoard),
+                    new Queen(Color.White, ChessBoard),
+                    new Bishop(Color.White, ChessBoard),
+                    new Knight(Color.White, ChessBoard),
+                    new Rook(Color.White, ChessBoard)
                 },
             };
             PlacePieces();
         }
 
-        public void ExecuteMove(Position origin, Position destination)
+        private void ExecuteMove(Position origin, Position destination)
         {
-            Piece piece = chessBoard.RemovePiece(origin);
+            Piece piece = ChessBoard.RemovePiece(origin);
             piece.IncrementMovementAmount();
-            Piece takenPiece = chessBoard.RemovePiece(destination);
-            chessBoard.InsertPiece(piece, destination);
+            Piece takenPiece = ChessBoard.RemovePiece(destination);
+            ChessBoard.InsertPiece(piece, destination);
+        }
+
+        public void ExecutePlay(Position origin, Position destination)
+        {
+            ExecuteMove(origin, destination);
+            Turn++;
+            ChangePlayer();
+        }
+
+        private void ChangePlayer()
+        {
+            ColorTurn = ColorTurn == Color.White ? Color.Black : Color.White;
         }
 
         private void PlacePieces()
         {
 
-            for (int i = 1; i < chessBoard.Lines + 1; i++)
+            for (int i = 1; i < ChessBoard.Lines + 1; i++)
             {
-                chessBoard.InsertPiece(new Pawn(Color.Black, chessBoard), new ChessPosition((char)(96 + i), 7).ToPosition());
-                chessBoard.InsertPiece(pieces[0,i-1], new ChessPosition((char)(96 + i), 8).ToPosition());
-                chessBoard.InsertPiece(new Pawn(Color.White, chessBoard), new ChessPosition((char)(96 + i), 2).ToPosition());
-                chessBoard.InsertPiece(pieces[1, i - 1], new ChessPosition((char)(96 + i), 1).ToPosition());
+                ChessBoard.InsertPiece(new Pawn(Color.Black, ChessBoard), new ChessPosition((char)(96 + i), 7).ToPosition());
+                ChessBoard.InsertPiece(pieces[0,i-1], new ChessPosition((char)(96 + i), 8).ToPosition());
+                ChessBoard.InsertPiece(new Pawn(Color.White, ChessBoard), new ChessPosition((char)(96 + i), 2).ToPosition());
+                ChessBoard.InsertPiece(pieces[1, i - 1], new ChessPosition((char)(96 + i), 1).ToPosition());
             }
 
-        }
-
-        public Board GetBoard()
-        {
-            return this.chessBoard;
         }
     }
 }

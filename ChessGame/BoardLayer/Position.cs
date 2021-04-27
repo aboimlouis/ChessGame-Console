@@ -18,6 +18,13 @@ namespace ChessGame.BoardLayer
             Line = line;
             Column = column;
         }
+
+        public void DefinePosition(int line, int column)
+        {
+            Line = line;
+            Column = column;
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

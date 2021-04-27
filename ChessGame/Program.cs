@@ -12,15 +12,25 @@ namespace ChessGame
             while (!inGame.End)
             {
                 Console.Clear();
-                Display.PrintBoard(inGame.GetBoard());
+                Display.PrintBoard(inGame.ChessBoard);
 
                 Console.WriteLine();
+                Console.WriteLine("Turn: " + inGame.Turn);
+                Console.WriteLine("Waiting for play: " + inGame.ColorTurn.ToString());
                 Console.Write("Origin: ");
                 Position origin = Display.ReadChessPosition().ToPosition();
+
+                bool[,] possiblePosition = inGame.ChessBoard.GetPiece(origin).AllowedMovement();
+                
+
+                Console.Clear();
+                Display.PrintMovement(inGame.ChessBoard, possiblePosition);
+                Console.WriteLine();
+
                 Console.Write("Destination: ");
                 Position destination = Display.ReadChessPosition().ToPosition();
 
-                inGame.ExecuteMove(origin, destination);
+                inGame.ExecutePlay(origin, destination);
             }
         }
     }
