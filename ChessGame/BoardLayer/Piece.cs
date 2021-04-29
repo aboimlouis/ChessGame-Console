@@ -11,6 +11,7 @@ namespace ChessGame.BoardLayer
         public int MovementAmount { get; protected set; }
         public Board Board { get; protected set; }
 
+
         public Piece()
         {
         }
@@ -26,6 +27,27 @@ namespace ChessGame.BoardLayer
         public void IncrementMovementAmount()
         {
             MovementAmount++;
+        }
+
+        public bool CanMove()
+        {
+            bool[,] listOfMovements = AllowedMovement();
+            for (int x = 0; x < Board.Lines; x++)
+            {
+                for (int y = 0; y < Board.Columns; y++)
+                {
+                    if (listOfMovements[x,y])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool CanMoveTo(Position position)
+        {
+            return AllowedMovement()[position.Line, position.Column];
         }
 
         public abstract bool[,] AllowedMovement();

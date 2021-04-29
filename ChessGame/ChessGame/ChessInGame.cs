@@ -58,19 +58,34 @@ namespace ChessGame.ChessGame
             ChangePlayer();
         }
 
+        public void ValidateOriginPostion(Position position)
+        {
+            if (ChessBoard.GetPiece(position) == null)
+                throw new BoardException("Empty space.");
+            if (ColorTurn != ChessBoard.GetPiece(position).Color)
+                throw new BoardException("Piece not controlled by the player.");
+            if (!ChessBoard.GetPiece(position).CanMove())
+                throw new BoardException("Piece can not move.");
+        }
+
+        public void ValidateDestinationPosition(Position origin, Position destination)
+        {
+            if (!ChessBoard.GetPiece(origin).CanMoveTo(destination))
+                throw new BoardException("Can not move piece to desired destination.");
+        }
+
         private void ChangePlayer()
         {
             ColorTurn = ColorTurn == Color.White ? Color.Black : Color.White;
         }
-
         private void PlacePieces()
         {
 
             for (int i = 1; i < ChessBoard.Lines + 1; i++)
             {
-                ChessBoard.InsertPiece(new Pawn(Color.Black, ChessBoard), new ChessPosition((char)(96 + i), 7).ToPosition());
+                //ChessBoard.InsertPiece(new Pawn(Color.Black, ChessBoard), new ChessPosition((char)(96 + i), 7).ToPosition());
                 ChessBoard.InsertPiece(pieces[0,i-1], new ChessPosition((char)(96 + i), 8).ToPosition());
-                ChessBoard.InsertPiece(new Pawn(Color.White, ChessBoard), new ChessPosition((char)(96 + i), 2).ToPosition());
+                //ChessBoard.InsertPiece(new Pawn(Color.White, ChessBoard), new ChessPosition((char)(96 + i), 2).ToPosition());
                 ChessBoard.InsertPiece(pieces[1, i - 1], new ChessPosition((char)(96 + i), 1).ToPosition());
             }
 
