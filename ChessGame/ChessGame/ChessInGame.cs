@@ -11,15 +11,17 @@ namespace ChessGame.ChessGame
         public  int Turn { get; private set; }
         public bool End { get; private set; }
         public Color ColorTurn { get; private set; }
-        private Piece[,] pieces;
+        private Piece[,] Pieces;
+        private List<Piece> InGamePieces;
+        private List<Piece> CapturedPieces;
         public ChessInGame()
         {
             this.ChessBoard = new Board(8, 8);
             this.Turn = 1;
             this.ColorTurn = Color.White;
             End = false;
-            pieces = new Piece[,]{
-                { 
+            Pieces = new Piece[,]{
+                {
                     new Rook(Color.Black, ChessBoard),
                     new Knight(Color.Black, ChessBoard),
                     new Bishop(Color.Black, ChessBoard),
@@ -29,7 +31,7 @@ namespace ChessGame.ChessGame
                     new Knight(Color.Black, ChessBoard),
                     new Rook(Color.Black, ChessBoard)
                 },
-                { 
+                {
                     new Rook(Color.White, ChessBoard),
                     new Knight(Color.White, ChessBoard),
                     new Bishop(Color.White, ChessBoard),
@@ -40,15 +42,30 @@ namespace ChessGame.ChessGame
                     new Rook(Color.White, ChessBoard)
                 },
             };
+            CapturedPieces = new List<Piece>();
+            InGamePieces = new List<Piece>();
             PlacePieces();
         }
-
+        
+        public List<Piece> takenPieces(Color color)
+        {
+            return CapturedPieces.FindAll(piece => piece.Color == color);
+        }
+        public List<Piece> gamePieces(Color color)
+        {
+            return InGamePieces.FindAll(piece => piece.Color == color);
+        }
         private void ExecuteMove(Position origin, Position destination)
         {
             Piece piece = ChessBoard.RemovePiece(origin);
             piece.IncrementMovementAmount();
             Piece takenPiece = ChessBoard.RemovePiece(destination);
             ChessBoard.InsertPiece(piece, destination);
+            if (takenPiece != null) 
+            {
+                CapturedPieces.Add(takenPiece);
+                InGamePieces.Remove(takenPiece);
+            }
         }
 
         public void ExecutePlay(Position origin, Position destination)
@@ -83,12 +100,22 @@ namespace ChessGame.ChessGame
 
             for (int i = 1; i < ChessBoard.Lines + 1; i++)
             {
-                //ChessBoard.InsertPiece(new Pawn(Color.Black, ChessBoard), new ChessPosition((char)(96 + i), 7).ToPosition());
-                ChessBoard.InsertPiece(pieces[0,i-1], new ChessPosition((char)(96 + i), 8).ToPosition());
-                //ChessBoard.InsertPiece(new Pawn(Color.White, ChessBoard), new ChessPosition((char)(96 + i), 2).ToPosition());
-                ChessBoard.InsertPiece(pieces[1, i - 1], new ChessPosition((char)(96 + i), 1).ToPosition());
+                /*ChessBoard.InsertPiece(new Pawn(Color.Black, ChessBoard), new ChessPosition((char)(96 + i), 7).ToPosition());
+                ChessBoard.InsertPiece(Pieces[0, i - 1], new ChessPosition((char)(96 + i), 8).ToPosition());
+                ChessBoard.InsertPiece(new Pawn(Color.White, ChessBoard), new ChessPosition((char)(96 + i), 2).ToPosition());
+                ChessBoard.InsertPiece(Pieces[1, i - 1], new ChessPosition((char)(96 + i), 1).ToPosition());*/
+
+                //PlaceNewPiece((char)(96 + i), 7, new Pawn(Color.Black, ChessBoard));
+                PlaceNewPiece((char)(96 + i), 8, Pieces[0, i - 1]);
+                //PlaceNewPiece((char)(96 + i), 2, new Pawn(Color.White, ChessBoard));
+                PlaceNewPiece((char)(96 + i), 1, Pieces[1, i - 1]);
             }
 
+        }
+        public void PlaceNewPiece(char column, int line, Piece piece)
+        {
+            ChessBoard.InsertPiece(piece, new ChessPosition(column, line).ToPosition());
+            InGamePieces.Add(piece);
         }
     }
 }

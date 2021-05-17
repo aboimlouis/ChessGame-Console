@@ -14,11 +14,7 @@ namespace ChessGame
                 try
                 {
                     Console.Clear();
-                    Display.PrintBoard(inGame.ChessBoard);
-
-                    Console.WriteLine();
-                    Console.WriteLine("Turn: " + inGame.Turn);
-                    Console.WriteLine("Waiting for play: " + inGame.ColorTurn.ToString());
+                    Display.PrintTurn(inGame);
                     Console.Write("Origin: ");
                     Position origin = Display.ReadChessPosition().ToPosition();
                     inGame.ValidateOriginPostion(origin);

@@ -8,6 +8,34 @@ namespace ChessGame
 {
     class Display
     {
+        public static void PrintTurn(ChessInGame inGame)
+        {
+            PrintBoard(inGame.ChessBoard);
+            PrintTakenPieces(inGame);
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + inGame.Turn);
+            Console.WriteLine("Waiting for play: " + inGame.ColorTurn.ToString());
+        }
+
+        public static void PrintTakenPieces(ChessInGame inGame)
+        {
+            Console.WriteLine("Taken pieces:");
+            Console.Write("White: ");
+            PrintPieceList(inGame.takenPieces(Color.White));
+            ConsoleColor consoleColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write("Black: ");
+            PrintPieceList(inGame.takenPieces(Color.Black));
+            Console.ForegroundColor = consoleColor;
+        }
+
+        public static void PrintPieceList(List<Piece> pieces)
+        {
+            Console.Write("[ ");
+            pieces.ForEach(piece => Console.Write(piece + " "));
+            Console.Write("]");
+            Console.WriteLine();
+        }
         public static void PrintBoard(Board board)
         {
             for (int x = 0; x < board.Lines; x++)
@@ -21,6 +49,7 @@ namespace ChessGame
                 Console.WriteLine();
             }
             Console.WriteLine("  A B C D E F G H");
+            Console.WriteLine();
         }
 
         public static void PrintMovement(Board board, bool[,] possibleMoves)
@@ -69,7 +98,7 @@ namespace ChessGame
                 else
                 {
                     ConsoleColor aux = Console.ForegroundColor;
-                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    Console.ForegroundColor = ConsoleColor.Blue;
                     Console.Write(piece);
                     Console.ForegroundColor = aux;
                 }
