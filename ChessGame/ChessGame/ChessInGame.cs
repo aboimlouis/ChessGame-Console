@@ -95,6 +95,7 @@ namespace ChessGame.ChessGame
             }
 
             Check = CalculateCheck(Adversary(ColorTurn));
+            End = CalculateCheckMate(Adversary(ColorTurn));
             Turn++;
             ChangePlayer();
         }
@@ -119,7 +120,31 @@ namespace ChessGame.ChessGame
                 if (movements[king.Position.Line, king.Position.Column]) return true;
             }
             return false;
+        }
 
+        public bool CalculateCheckMate(Color color)
+        {
+            if (!CalculateCheck(color)) return false;
+            foreach (Piece piece in GamePieces(color))
+            {
+                bool[,] possibleMoves = piece.AllowedMovement();
+                for (int x = 0; x < ChessBoard.Lines; x++)
+                {
+                    for (int y = 0; y < ChessBoard.Lines; y++)
+                    {
+                        if (possibleMoves[x,y])
+                        {
+                            Position origin = piece.Position;
+                            Position destination = new Position(x, y);
+                            Piece capturedPiece = ExecuteMove(origin, destination);
+                            bool testCheck = CalculateCheck(color);
+                            UndoMove(origin, destination, capturedPiece);
+                            if(!testCheck) return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         public void ValidateOriginPostion(Position position)
@@ -147,16 +172,11 @@ namespace ChessGame.ChessGame
 
             for (int i = 1; i < ChessBoard.Lines + 1; i++)
             {
-                //PlaceNewPiece((char)(96 + i), 7, new Pawn(Color.Black, ChessBoard));
-                //PlaceNewPiece((char)(96 + i), 8, Pieces[0, i - 1]);
-                //PlaceNewPiece((char)(96 + i), 2, new Pawn(Color.White, ChessBoard));
-                //PlaceNewPiece((char)(96 + i), 1, Pieces[1, i - 1]);
+                PlaceNewPiece((char)(96 + i), 7, new Pawn(Color.Black, ChessBoard));
+                PlaceNewPiece((char)(96 + i), 8, Pieces[0, i - 1]);
+                PlaceNewPiece((char)(96 + i), 2, new Pawn(Color.White, ChessBoard));
+                PlaceNewPiece((char)(96 + i), 1, Pieces[1, i - 1]);
             }
-            PlaceNewPiece('a', 8, new Rook(Color.Black, ChessBoard));
-            PlaceNewPiece('b', 8, new King(Color.Black, ChessBoard));
-            PlaceNewPiece('a', 1, new Rook(Color.White, ChessBoard));
-            PlaceNewPiece('b', 1, new King(Color.White, ChessBoard));
-
         }
         public void PlaceNewPiece(char column, int line, Piece piece)
         {

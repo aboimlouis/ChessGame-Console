@@ -13,7 +13,81 @@ namespace ChessGame.ChessGame
 
         public override bool[,] AllowedMovement()
         {
-            throw new NotImplementedException();
+            bool[,] validMovement = new bool[Board.Lines, Board.Columns];
+
+            Position futurePosition = new Position(0, 0);
+
+            if(Color == Color.White)
+            {
+                futurePosition.DefinePosition(Position.Line - 1, Position.Column);
+                if (Board.ValidPosition(futurePosition) && freeToMove(futurePosition))
+                {
+                    validMovement[futurePosition.Line, futurePosition.Column] = true;
+                }
+
+                futurePosition.DefinePosition(Position.Line - 2, Position.Column);
+                if (Board.ValidPosition(futurePosition) && freeToMove(futurePosition) && MovementAmount == 0)
+                {
+                    validMovement[futurePosition.Line, futurePosition.Column] = true;
+                }
+
+                futurePosition.DefinePosition(Position.Line - 1, Position.Column - 1);
+                if (Board.ValidPosition(futurePosition) && EnemyInPosition(futurePosition))
+                {
+                    validMovement[futurePosition.Line, futurePosition.Column] = true;
+                }
+
+                futurePosition.DefinePosition(Position.Line - 1, Position.Column + 1);
+                if (Board.ValidPosition(futurePosition) && EnemyInPosition(futurePosition))
+                {
+                    validMovement[futurePosition.Line, futurePosition.Column] = true;
+                }
+            }
+            else
+            {
+                futurePosition.DefinePosition(Position.Line + 1, Position.Column);
+                if (Board.ValidPosition(futurePosition) && freeToMove(futurePosition))
+                {
+                    validMovement[futurePosition.Line, futurePosition.Column] = true;
+                }
+
+                futurePosition.DefinePosition(Position.Line + 2, Position.Column);
+                if (Board.ValidPosition(futurePosition) && freeToMove(futurePosition) && MovementAmount == 0)
+                {
+                    validMovement[futurePosition.Line, futurePosition.Column] = true;
+                }
+
+                futurePosition.DefinePosition(Position.Line + 1, Position.Column - 1);
+                if (Board.ValidPosition(futurePosition) && EnemyInPosition(futurePosition))
+                {
+                    validMovement[futurePosition.Line, futurePosition.Column] = true;
+                }
+
+                futurePosition.DefinePosition(Position.Line + 1, Position.Column + 1);
+                if (Board.ValidPosition(futurePosition) && EnemyInPosition(futurePosition))
+                {
+                    validMovement[futurePosition.Line, futurePosition.Column] = true;
+                }
+            }
+
+            return validMovement;
+        }
+
+        private bool EnemyInPosition(Position position)
+        {
+            Piece piece = Board.GetPiece(position);
+            return piece != null && piece.Color != Color;
+        }
+
+        private bool freeToMove(Position position)
+        {
+            return Board.GetPiece(position) == null;
+        }
+
+        private bool CanMove(Position position)
+        {
+            Piece piece = Board.GetPiece(position);
+            return piece == null || piece.Color != Color;
         }
 
         public override string ToString()

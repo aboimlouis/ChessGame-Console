@@ -15,12 +15,21 @@ namespace ChessGame
             Console.WriteLine();
             Console.WriteLine("Turn: " + inGame.Turn);
             Console.WriteLine("Waiting for play: " + inGame.ColorTurn.ToString());
-            if (inGame.Check)
+
+            if (!inGame.End)
             {
-                ConsoleColor consoleColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("CHECK");
-                Console.ForegroundColor = consoleColor;
+                if (inGame.Check)
+                {
+                    ConsoleColor consoleColor = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("CHECK");
+                    Console.ForegroundColor = consoleColor;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Check Mate!");
+                Console.WriteLine("The winner is: " + inGame.ColorTurn);
             }
         }
 
