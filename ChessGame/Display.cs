@@ -15,17 +15,24 @@ namespace ChessGame
             Console.WriteLine();
             Console.WriteLine("Turn: " + inGame.Turn);
             Console.WriteLine("Waiting for play: " + inGame.ColorTurn.ToString());
+            if (inGame.Check)
+            {
+                ConsoleColor consoleColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("CHECK");
+                Console.ForegroundColor = consoleColor;
+            }
         }
 
         public static void PrintTakenPieces(ChessInGame inGame)
         {
             Console.WriteLine("Taken pieces:");
             Console.Write("White: ");
-            PrintPieceList(inGame.takenPieces(Color.White));
+            PrintPieceList(inGame.TakenPieces(Color.White));
             ConsoleColor consoleColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("Black: ");
-            PrintPieceList(inGame.takenPieces(Color.Black));
+            PrintPieceList(inGame.TakenPieces(Color.Black));
             Console.ForegroundColor = consoleColor;
         }
 

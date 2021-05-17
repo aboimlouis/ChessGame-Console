@@ -10,6 +10,7 @@ namespace ChessGame.ChessGame
         public Board ChessBoard { get; private set; }
         public  int Turn { get; private set; }
         public bool End { get; private set; }
+        public bool Check { get; private set; }
         public Color ColorTurn { get; private set; }
         private Piece[,] Pieces;
         private List<Piece> InGamePieces;
@@ -20,6 +21,7 @@ namespace ChessGame.ChessGame
             this.Turn = 1;
             this.ColorTurn = Color.White;
             End = false;
+            Check = false;
             Pieces = new Piece[,]{
                 {
                     new Rook(Color.Black, ChessBoard),
@@ -47,15 +49,15 @@ namespace ChessGame.ChessGame
             PlacePieces();
         }
         
-        public List<Piece> takenPieces(Color color)
+        public List<Piece> TakenPieces(Color color)
         {
             return CapturedPieces.FindAll(piece => piece.Color == color);
         }
-        public List<Piece> gamePieces(Color color)
+        public List<Piece> GamePieces(Color color)
         {
             return InGamePieces.FindAll(piece => piece.Color == color);
         }
-        private void ExecuteMove(Position origin, Position destination)
+        private Piece ExecuteMove(Position origin, Position destination)
         {
             Piece piece = ChessBoard.RemovePiece(origin);
             piece.IncrementMovementAmount();
@@ -66,13 +68,58 @@ namespace ChessGame.ChessGame
                 CapturedPieces.Add(takenPiece);
                 InGamePieces.Remove(takenPiece);
             }
+            return takenPiece;
+        }
+
+        public void UndoMove(Position origin, Position destination, Piece capturedPiece)
+        {
+            Piece piece = ChessBoard.RemovePiece(destination);
+            piece.DecrementMovementAmount();
+            if(capturedPiece != null)
+            {
+                ChessBoard.InsertPiece(capturedPiece, destination);
+                CapturedPieces.Remove(capturedPiece);
+            }
+
+            ChessBoard.InsertPiece(piece, origin);
         }
 
         public void ExecutePlay(Position origin, Position destination)
         {
-            ExecuteMove(origin, destination);
+            Piece capturedPiece = ExecuteMove(origin, destination);
+
+            if (CalculateCheck(ColorTurn))
+            {
+                UndoMove(origin, destination, capturedPiece);
+                throw new BoardException("You can't put yourself in check!");
+            }
+
+            Check = CalculateCheck(Adversary(ColorTurn));
             Turn++;
             ChangePlayer();
+        }
+
+
+        private Color Adversary(Color color)
+        {
+            return color == Color.White ? Color.Black : Color.White;
+        }
+
+        private Piece GetKing(Color color)
+        {
+            return GamePieces(color).Find(piece => piece is King);
+        }
+
+        public bool CalculateCheck(Color color)
+        {
+            Piece king = GetKing(color);
+            foreach (Piece piece in GamePieces(Adversary(color)))
+            {
+                bool[,] movements = piece.AllowedMovement();
+                if (movements[king.Position.Line, king.Position.Column]) return true;
+            }
+            return false;
+
         }
 
         public void ValidateOriginPostion(Position position)
@@ -100,16 +147,15 @@ namespace ChessGame.ChessGame
 
             for (int i = 1; i < ChessBoard.Lines + 1; i++)
             {
-                /*ChessBoard.InsertPiece(new Pawn(Color.Black, ChessBoard), new ChessPosition((char)(96 + i), 7).ToPosition());
-                ChessBoard.InsertPiece(Pieces[0, i - 1], new ChessPosition((char)(96 + i), 8).ToPosition());
-                ChessBoard.InsertPiece(new Pawn(Color.White, ChessBoard), new ChessPosition((char)(96 + i), 2).ToPosition());
-                ChessBoard.InsertPiece(Pieces[1, i - 1], new ChessPosition((char)(96 + i), 1).ToPosition());*/
-
                 //PlaceNewPiece((char)(96 + i), 7, new Pawn(Color.Black, ChessBoard));
-                PlaceNewPiece((char)(96 + i), 8, Pieces[0, i - 1]);
+                //PlaceNewPiece((char)(96 + i), 8, Pieces[0, i - 1]);
                 //PlaceNewPiece((char)(96 + i), 2, new Pawn(Color.White, ChessBoard));
-                PlaceNewPiece((char)(96 + i), 1, Pieces[1, i - 1]);
+                //PlaceNewPiece((char)(96 + i), 1, Pieces[1, i - 1]);
             }
+            PlaceNewPiece('a', 8, new Rook(Color.Black, ChessBoard));
+            PlaceNewPiece('b', 8, new King(Color.Black, ChessBoard));
+            PlaceNewPiece('a', 1, new Rook(Color.White, ChessBoard));
+            PlaceNewPiece('b', 1, new King(Color.White, ChessBoard));
 
         }
         public void PlaceNewPiece(char column, int line, Piece piece)

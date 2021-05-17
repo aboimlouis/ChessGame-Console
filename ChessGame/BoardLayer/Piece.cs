@@ -29,6 +29,11 @@ namespace ChessGame.BoardLayer
             MovementAmount++;
         }
 
+        public void DecrementMovementAmount()
+        {
+            MovementAmount--;
+        }
+
         public bool CanMove()
         {
             bool[,] listOfMovements = AllowedMovement();
