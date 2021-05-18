@@ -27,8 +27,8 @@ namespace ChessGame.ChessGame
                     new Rook(Color.Black, ChessBoard),
                     new Knight(Color.Black, ChessBoard),
                     new Bishop(Color.Black, ChessBoard),
-                    new King(Color.Black, ChessBoard),
                     new Queen(Color.Black, ChessBoard),
+                    new King(Color.Black, ChessBoard),
                     new Bishop(Color.Black, ChessBoard),
                     new Knight(Color.Black, ChessBoard),
                     new Rook(Color.Black, ChessBoard)
@@ -37,8 +37,8 @@ namespace ChessGame.ChessGame
                     new Rook(Color.White, ChessBoard),
                     new Knight(Color.White, ChessBoard),
                     new Bishop(Color.White, ChessBoard),
-                    new King(Color.White, ChessBoard),
                     new Queen(Color.White, ChessBoard),
+                    new King(Color.White, ChessBoard),
                     new Bishop(Color.White, ChessBoard),
                     new Knight(Color.White, ChessBoard),
                     new Rook(Color.White, ChessBoard)

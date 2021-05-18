@@ -17,7 +17,7 @@ namespace ChessGame.ChessGame
             bool[,] validMovement = new bool[Board.Lines, Board.Columns];
             Position futurePosition = new Position(0, 0);
 
-            //Northeast
+            //Northwest
             futurePosition.DefinePosition(Position.Line - 1, Position.Column - 1);
             while (Board.ValidPosition(futurePosition) && CanMove(futurePosition))
             {
@@ -42,7 +42,7 @@ namespace ChessGame.ChessGame
             }
 
             //Southeast
-            futurePosition.DefinePosition(Position.Line - 1, Position.Column - 1);
+            futurePosition.DefinePosition(Position.Line + 1, Position.Column + 1);
             while (Board.ValidPosition(futurePosition) && CanMove(futurePosition))
             {
                 validMovement[futurePosition.Line, futurePosition.Column] = true;
@@ -54,7 +54,7 @@ namespace ChessGame.ChessGame
             }
 
             //Southwest
-            futurePosition.DefinePosition(Position.Line - 1, Position.Column - 1);
+            futurePosition.DefinePosition(Position.Line + 1, Position.Column - 1);
             while (Board.ValidPosition(futurePosition) && CanMove(futurePosition))
             {
                 validMovement[futurePosition.Line, futurePosition.Column] = true;

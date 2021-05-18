@@ -68,7 +68,7 @@ namespace ChessGame.ChessGame
                 futurePosition.DefinePosition(futurePosition.Line, futurePosition.Column - 1);
             }
 
-            //Northeast
+            //Northwest
             futurePosition.DefinePosition(Position.Line - 1, Position.Column - 1);
             while (Board.ValidPosition(futurePosition) && CanMove(futurePosition))
             {
@@ -93,7 +93,7 @@ namespace ChessGame.ChessGame
             }
 
             //Southeast
-            futurePosition.DefinePosition(Position.Line - 1, Position.Column - 1);
+            futurePosition.DefinePosition(Position.Line + 1, Position.Column + 1);
             while (Board.ValidPosition(futurePosition) && CanMove(futurePosition))
             {
                 validMovement[futurePosition.Line, futurePosition.Column] = true;
@@ -105,7 +105,7 @@ namespace ChessGame.ChessGame
             }
 
             //Southwest
-            futurePosition.DefinePosition(Position.Line - 1, Position.Column - 1);
+            futurePosition.DefinePosition(Position.Line + 1, Position.Column - 1);
             while (Board.ValidPosition(futurePosition) && CanMove(futurePosition))
             {
                 validMovement[futurePosition.Line, futurePosition.Column] = true;
@@ -115,7 +115,6 @@ namespace ChessGame.ChessGame
                 }
                 futurePosition.DefinePosition(futurePosition.Line + 1, futurePosition.Column - 1);
             }
-
             return validMovement;
         }
 
