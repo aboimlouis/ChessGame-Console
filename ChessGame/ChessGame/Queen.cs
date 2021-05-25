@@ -15,10 +15,7 @@ namespace ChessGame.ChessGame
         public override bool[,] AllowedMovement()
         {
             bool[,] validMovement = new bool[Board.Lines, Board.Columns];
-
             Position futurePosition = new Position(0, 0);
-
-
 
             //north
             futurePosition.DefinePosition(Position.Line - 1, Position.Column);

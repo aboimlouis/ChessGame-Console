@@ -79,8 +79,8 @@ namespace ChessGame.ChessGame
             {
                 ChessBoard.InsertPiece(capturedPiece, destination);
                 CapturedPieces.Remove(capturedPiece);
+                InGamePieces.Add(capturedPiece);
             }
-
             ChessBoard.InsertPiece(piece, origin);
         }
 
@@ -95,9 +95,15 @@ namespace ChessGame.ChessGame
             }
 
             Check = CalculateCheck(Adversary(ColorTurn));
-            End = CalculateCheckMate(Adversary(ColorTurn));
-            Turn++;
-            ChangePlayer();
+            if (CalculateCheckMate(Adversary(ColorTurn)))
+            {
+                End = true;
+            }
+            else
+            {
+                Turn++;
+                ChangePlayer();
+            }
         }
 
 
@@ -125,6 +131,7 @@ namespace ChessGame.ChessGame
         public bool CalculateCheckMate(Color color)
         {
             if (!CalculateCheck(color)) return false;
+            bool checkMate = true;
             foreach (Piece piece in GamePieces(color))
             {
                 bool[,] possibleMoves = piece.AllowedMovement();
@@ -137,14 +144,13 @@ namespace ChessGame.ChessGame
                             Position origin = piece.Position;
                             Position destination = new Position(x, y);
                             Piece capturedPiece = ExecuteMove(origin, destination);
-                            bool testCheck = CalculateCheck(color);
+                            checkMate = CalculateCheck(color);
                             UndoMove(origin, destination, capturedPiece);
-                            if(!testCheck) return false;
                         }
                     }
                 }
             }
-            return true;
+            return checkMate;
         }
 
         public void ValidateOriginPostion(Position position)
@@ -153,7 +159,7 @@ namespace ChessGame.ChessGame
                 throw new BoardException("Empty space.");
             if (ColorTurn != ChessBoard.GetPiece(position).Color)
                 throw new BoardException("Piece not controlled by the player.");
-            if (!ChessBoard.GetPiece(position).CanMove())
+            if (!ChessBoard.GetPiece(position).CanPieceMove())
                 throw new BoardException("Piece can not move.");
         }
 

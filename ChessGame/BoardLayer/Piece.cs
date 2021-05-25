@@ -34,7 +34,7 @@ namespace ChessGame.BoardLayer
             MovementAmount--;
         }
 
-        public bool CanMove()
+        public bool CanPieceMove()
         {
             bool[,] listOfMovements = AllowedMovement();
             for (int x = 0; x < Board.Lines; x++)

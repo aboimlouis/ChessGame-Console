@@ -13,7 +13,7 @@ namespace ChessGame
             {
                 try
                 {
-                    Console.Clear();
+                    //Console.Clear();
                     Display.PrintTurn(inGame);
                     Console.Write("Origin: ");
                     Position origin = Display.ReadChessPosition().ToPosition();
@@ -22,15 +22,33 @@ namespace ChessGame
                     bool[,] possiblePosition = inGame.ChessBoard.GetPiece(origin).AllowedMovement();
 
 
-                    Console.Clear();
+                    //Console.Clear();
                     Display.PrintMovement(inGame.ChessBoard, possiblePosition);
                     Console.WriteLine();
-
                     Console.Write("Destination: ");
                     Position destination = Display.ReadChessPosition().ToPosition();
                     inGame.ValidateDestinationPosition(origin, destination);
 
                     inGame.ExecutePlay(origin, destination);
+
+                    if (!inGame.End)
+                    {
+                        if (inGame.Check)
+                        {
+                            ConsoleColor consoleColor = Console.ForegroundColor;
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("CHECK");
+                            Console.ForegroundColor = consoleColor;
+                        }
+                    }
+                    else
+                    {
+                        ConsoleColor consoleColor = Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Check Mate!");
+                        Console.ForegroundColor = consoleColor;
+                        Console.WriteLine("The winner is: " + inGame.ColorTurn);
+                    }
                 }
                 catch (BoardException e)
                 {

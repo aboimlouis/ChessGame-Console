@@ -20,13 +20,13 @@ namespace ChessGame.ChessGame
             if(Color == Color.White)
             {
                 futurePosition.DefinePosition(Position.Line - 1, Position.Column);
-                if (Board.ValidPosition(futurePosition) && freeToMove(futurePosition))
+                if (Board.ValidPosition(futurePosition) && FreeToMove(futurePosition))
                 {
                     validMovement[futurePosition.Line, futurePosition.Column] = true;
                 }
 
                 futurePosition.DefinePosition(Position.Line - 2, Position.Column);
-                if (Board.ValidPosition(futurePosition) && freeToMove(futurePosition) && MovementAmount == 0)
+                if (Board.ValidPosition(futurePosition) && FreeToMove(futurePosition) && MovementAmount == 0)
                 {
                     validMovement[futurePosition.Line, futurePosition.Column] = true;
                 }
@@ -46,13 +46,13 @@ namespace ChessGame.ChessGame
             else
             {
                 futurePosition.DefinePosition(Position.Line + 1, Position.Column);
-                if (Board.ValidPosition(futurePosition) && freeToMove(futurePosition))
+                if (Board.ValidPosition(futurePosition) && FreeToMove(futurePosition))
                 {
                     validMovement[futurePosition.Line, futurePosition.Column] = true;
                 }
 
                 futurePosition.DefinePosition(Position.Line + 2, Position.Column);
-                if (Board.ValidPosition(futurePosition) && freeToMove(futurePosition) && MovementAmount == 0)
+                if (Board.ValidPosition(futurePosition) && FreeToMove(futurePosition) && MovementAmount == 0)
                 {
                     validMovement[futurePosition.Line, futurePosition.Column] = true;
                 }
@@ -79,15 +79,9 @@ namespace ChessGame.ChessGame
             return piece != null && piece.Color != Color;
         }
 
-        private bool freeToMove(Position position)
+        private bool FreeToMove(Position position)
         {
             return Board.GetPiece(position) == null;
-        }
-
-        private bool CanMove(Position position)
-        {
-            Piece piece = Board.GetPiece(position);
-            return piece == null || piece.Color != Color;
         }
 
         public override string ToString()
